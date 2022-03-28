@@ -17,10 +17,10 @@ class InfoMessage:
     def get_message(self) -> str:
         """Получить строку информационного сообщения."""
         string = (f'Тип тренировки: {self.training_type}; '
-                  + f'Длительность: {self.duration:.3f} ч.; '
-                  + f'Дистанция: {self.distance:.3f} км; '
-                  + f'Ср. скорость: {self.speed:.3f} км/ч; '
-                  + f'Потрачено ккал: {self.calories:.3f}.')
+                  f'Длительность: {self.duration:.3f} ч.; '
+                  f'Дистанция: {self.distance:.3f} км; '
+                  f'Ср. скорость: {self.speed:.3f} км/ч; '
+                  f'Потрачено ккал: {self.calories:.3f}.')
         return string
 
 
@@ -51,7 +51,8 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        pass
+        raise NotImplementedError('Нужно реализовать get_spent_calories в '
+                                  '%s.' % (self.__class__.__name__))
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -101,7 +102,7 @@ class SportsWalking(Training):
 class Swimming(Training):
     """Тренировка: плавание."""
 
-    LEN_STEP = 1.38
+    LEN_STEP: float = 1.38
 
     def __init__(self,
                  action: int,
@@ -130,22 +131,15 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    if workout_type == 'SWM':
-        training: Training = Swimming(data[0], float(data[1]), data[2],
-                                      data[3], data[4])
-    elif workout_type == 'RUN':
-        training = Running(data[0], float(data[1]), data[2])
-    elif workout_type == 'WLK':
-        training = SportsWalking(data[0], float(data[1]), data[2], data[3])
-    else:
-        print('Некорректный вид тренировки.')
+    workout_dict: dict = {'SWM': Swimming, 'RUN': Running, 'WLK': SportsWalking}
+    training: Training = workout_dict[workout_type](*data)
     return training
 
 
 def main(training: Training) -> None:
     """Главная функция."""
-    info: InfoMessage = Training.show_training_info(training)
-    string: str = InfoMessage.get_message(info)
+    info: InfoMessage = training.show_training_info()
+    string: str = info.get_message()
     print(string)
 
 
