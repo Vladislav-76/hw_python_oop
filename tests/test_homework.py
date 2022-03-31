@@ -48,7 +48,7 @@ def test_InfoMessage():
     info_message = homework.InfoMessage
     info_message_signature = inspect.signature(info_message)
     info_message_signature_list = list(info_message_signature.parameters)
-    for p in ['training_type', 'duration', 'distance', 'speed', 'calories']:
+    for p in ['training_type', 'duration_h', 'distance_km', 'speed_kmh', 'calories']:
         assert p in info_message_signature_list, (
             'У метода `__init__` класса `InfoMessage` должен быть '
             f'параметр {p}.'
@@ -109,7 +109,7 @@ def test_Training():
     training = homework.Training
     training_signature = inspect.signature(training)
     training_signature_list = list(training_signature.parameters)
-    for param in ['action', 'duration', 'weight']:
+    for param in ['action', 'duration_h', 'weight_kg']:
         assert param in training_signature_list, (
             'У метода `__init__` класса `Training` должен быть '
             f' параметр {param}.'
@@ -216,7 +216,7 @@ def test_Swimming():
     swimming = homework.Swimming
     swimming_signature = inspect.signature(swimming)
     swimming_signature_list = list(swimming_signature.parameters)
-    for param in ['action', 'duration', 'weight', 'length_pool', 'count_pool']:
+    for param in ['action', 'duration_h', 'weight_kg', 'length_pool_m', 'count_pool']:
         assert param in swimming_signature_list, (
             'У метода `__init__` класса `Swimming` '
             f' должен быть параметр {param}.'
@@ -270,7 +270,7 @@ def test_SportsWalking():
     sports_walking = homework.SportsWalking
     sports_walking_signature = inspect.signature(sports_walking)
     sports_walking_signature_list = list(sports_walking_signature.parameters)
-    for param in ['action', 'duration', 'weight', 'height']:
+    for param in ['action', 'duration_h', 'weight_kg', 'height_sm']:
         assert param in sports_walking_signature_list, (
             'У метода `__init__` класса `SportsWalking` '
             f'должен быть параметр {param}.'
