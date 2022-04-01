@@ -1,4 +1,5 @@
 from dataclasses import dataclass, asdict
+from typing import Dict, Type
 
 
 @dataclass
@@ -62,13 +63,6 @@ class Training:
 class Running(Training):
     """Тренировка: бег."""
 
-    def __init__(self,
-                 action: int,
-                 duration: float,
-                 weight: float
-                 ) -> None:
-        super().__init__(action, duration, weight)
-
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий при беге."""
         coeff_calorie_1: int = 18
@@ -128,15 +122,16 @@ class Swimming(Training):
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий при плавании."""
         coeff_calorie_1: float = 1.1
+        multiplier: int = 2
         spent_calories: float = ((self.get_mean_speed() + coeff_calorie_1)
-                                 * 2 * self.weight)
+                                 * multiplier * self.weight)
         return spent_calories
 
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    workout_dict: dict = {'SWM': Swimming, 'RUN': Running,
-                          'WLK': SportsWalking}
+    workout_dict: Dict[str, Type[Training]] = {'SWM': Swimming, 'RUN': Running,
+                                               'WLK': SportsWalking}
     training: Training = workout_dict[workout_type](*data)
     return training
 
